@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'awesome_print'
+require 'cgminer/api'
 require 'optparse'
 require 'yaml'
 
@@ -29,15 +30,19 @@ rescue
   fail 'An error occurred parsing configuration file'
 end
 
-ap options
-
 key = options.fetch(:key, config['api-key'])
 fail 'Brigade API key is required' if key.nil?
 
-puts key
-
 # XXX connect once, check API key validity
 
-loop do
+# build a hash-o-miner clients
+miners = config['miners'].map do |miner|
+  name = miner[0]
+  client = CGMiner::API::Client.new(miner[1]['host'], miner[1]['port'])
+  { name: name, client: client }
+end
 
+loop do
+  miners.each { |miner| ap miner[:client].summary }
+  sleep 5
 end
