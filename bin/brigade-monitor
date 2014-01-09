@@ -1,3 +1,43 @@
 #!/usr/bin/env ruby
 
-puts "Hello"
+require 'awesome_print'
+require 'optparse'
+require 'yaml'
+
+me = File.basename(__FILE__)
+
+options = {}
+optparse = OptionParser.new do |opts|
+  opts.banner = "Usage: #{me} [options]"
+  opts.on('-c', '--config FILE', String, 'Configuration file') do |c|
+    options[:config] = c
+  end
+  opts.on('-k', '--key API-KEY', String, 'Brigade API key') do |key|
+    options[:key] = key
+  end
+  opts.on('-v', '--version', 'Print application version') do
+    puts "#{me} v#{Brigade::Monitor::VERSION}"
+    exit
+  end
+end.parse!
+
+fail 'Configuration file is required' unless options[:config]
+
+begin
+  config = YAML.load(open(options[:config]).read)
+rescue
+  fail 'An error occurred parsing configuration file'
+end
+
+ap options
+
+key = options.fetch(:key, config['api-key'])
+fail 'Brigade API key is required' if key.nil?
+
+puts key
+
+# XXX connect once, check API key validity
+
+loop do
+
+end
