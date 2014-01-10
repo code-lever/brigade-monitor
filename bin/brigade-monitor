@@ -96,6 +96,9 @@ loop do
     rescue Net::OpenTimeout
       puts "Timed out: #{miner}"
       # XXX put something in the update to indicate it barfed
+    rescue Exception => e
+      puts "Some other error: #{miner} (#{e.class})"
+      # XXX put something in the update to indicate it barfed
     end
   end
 
