@@ -1,0 +1,8 @@
+api-key: ABCDEF0123456789
+miners:
+  'Colony #1':
+    host: colony1
+    port: 4028
+  'Colony #2':
+    host: colony2
+    port: 4028

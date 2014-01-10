@@ -43,7 +43,22 @@ miners = config['miners'].map do |miner|
   { name: name, client: client }
 end
 
+class BrigadeAPI
+  include HTTParty
+  base_uri 'https://app.brigade.io/api/v1'
+end
+
 loop do
-  miners.each { |miner| ap miner[:client].summary }
+  miners.each do |miner|
+    begin
+      cg_response = miner[:client].devs
+      puts cg_response.body
+
+      api_response = BrigadeAPI.post("/hosts", query: { token: key, body: cg_response.body.to_s }, verify: false)
+      puts api_response
+    rescue Net::OpenTimeout
+      puts "Timed out: #{miner}"
+    end
+  end
   sleep 5
 end
