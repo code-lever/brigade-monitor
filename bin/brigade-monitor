@@ -1,8 +1,8 @@
 #!/usr/bin/env ruby
 
 require 'awesome_print'
+require 'brigade/monitor'
 require 'cgminer/api'
-require 'httparty'
 require 'optparse'
 require 'yaml'
 
@@ -38,27 +38,70 @@ fail 'Brigade API key is required' if key.nil?
 
 # build a hash-o-miner clients
 miners = config['miners'].map do |miner|
-  name = miner[0]
-  client = CGMiner::API::Client.new(miner[1]['host'], miner[1]['port'])
-  { name: name, client: client }
+  {
+    name: miner[0],
+    client: CGMiner::API::Client.new(miner[1]['host'], miner[1]['port'])
+  }
 end
 
-class BrigadeAPI
-  include HTTParty
-  base_uri 'https://app.brigade.io/api/v1'
-end
-
+api = Brigade::Monitor::API.new(key)
 loop do
+
+  updates = []
+
   miners.each do |miner|
     begin
-      cg_response = miner[:client].devs
-      puts cg_response.body
+      summary = miner[:client].summary
+      devs = miner[:client].devs
+      pools = miner[:client].pools
 
-      api_response = BrigadeAPI.post("/hosts", query: { token: key, body: cg_response.body.to_s }, verify: false)
-      puts api_response
+      # XXX check status replies on each command?
+
+      update = {
+        host: miner[:name],
+        uptime: summary.body[0]['Elapsed'] / 60,
+        mhash: summary.body[0]['MHS 5s'],
+        rejectpct: summary.body[0]['Pool Rejected%'],
+        asics: [],
+        fpgas: [],
+        gpus: [],
+        pools: []
+      }
+
+      devs.body.each do |dev|
+        if dev.has_key? 'GPU'
+          update[:gpus] << {
+            temperature: dev['Temperature'],
+            enabled: dev['Enabled'] == 'Y',
+            status: :ok,                            # XXX enumerate statuses
+            uptime: dev['Device Elapsed'] / 60,
+            mhash: dev['MHS 5s'],
+            rejectpct: dev['Device Rejected%']
+          }
+        else
+          puts "Skipped device: #{dev}"
+        end
+      end
+
+      pools.body.each do |pool|
+        update[:pools] << {
+          url: pool['URL'],
+          status: :ok,                              # XXX enumerate statuses
+          active: pool['Stratum Active'],
+          rejectpct: pool['Pool Rejected%']
+        }
+      end
+
+      updates << update
     rescue Net::OpenTimeout
       puts "Timed out: #{miner}"
+      # XXX put something in the update to indicate it barfed
     end
   end
-  sleep 5
+
+  response = api.hosts(updates)
+  puts response.code
+
+  sleep 60
+
 end
