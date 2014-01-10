@@ -59,7 +59,7 @@ loop do
 
       update = {
         host: miner[:name],
-        uptime: summary.body[0]['Elapsed'] / 60,
+        uptime: summary.body[0]['Elapsed'],
         mhash: summary.body[0]['MHS 5s'],
         rejectpct: summary.body[0]['Pool Rejected%'],
         asics: [],
@@ -74,7 +74,7 @@ loop do
             temperature: dev['Temperature'],
             enabled: dev['Enabled'] == 'Y',
             status: :ok,                            # XXX enumerate statuses
-            uptime: dev['Device Elapsed'] / 60,
+            uptime: dev['Device Elapsed'],
             mhash: dev['MHS 5s'],
             rejectpct: dev['Device Rejected%']
           }
