@@ -2,6 +2,7 @@
 
 require 'awesome_print'
 require 'cgminer/api'
+require 'httparty'
 require 'optparse'
 require 'yaml'
 

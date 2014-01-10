@@ -28,4 +28,5 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'awesome_print'
   spec.add_dependency 'cgminer-api'
+  spec.add_dependency 'httparty'
 end
