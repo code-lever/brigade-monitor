@@ -105,7 +105,9 @@ loop do
   end
 
   response = api.hosts(updates)
-  puts response.code
+  unless 200 == response.code
+    puts "XXX: response: #{response.code}"
+  end
 
   sleep 60
 
