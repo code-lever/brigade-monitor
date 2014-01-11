@@ -71,6 +71,7 @@ loop do
       devs.body.each do |dev|
         if dev.has_key? 'GPU'
           update[:gpus] << {
+            index: dev['GPU'],
             temperature: dev['Temperature'],
             enabled: dev['Enabled'] == 'Y',
             status: :ok,                            # XXX enumerate statuses
@@ -85,6 +86,7 @@ loop do
 
       pools.body.each do |pool|
         update[:pools] << {
+          index: pool['POOL'],
           url: pool['URL'],
           status: :ok,                              # XXX enumerate statuses
           active: pool['Stratum Active'],
