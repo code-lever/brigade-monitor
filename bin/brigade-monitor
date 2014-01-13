@@ -104,9 +104,11 @@ loop do
     end
   end
 
-  response = api.hosts(updates)
-  unless 200 == response.code
-    puts "XXX: response: #{response.code}"
+  unless updates.empty?
+    response = api.hosts(updates)
+    unless 200 == response.code
+      puts "XXX: response: #{response.code} #{response}"
+    end
   end
 
   sleep 60
