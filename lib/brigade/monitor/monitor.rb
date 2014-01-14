@@ -55,7 +55,6 @@ module Brigade
           end
 
           sleep 60
-
         end
       end
 
