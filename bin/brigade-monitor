@@ -46,83 +46,11 @@ end
 key = options.fetch(:key, config['api-key'])
 fail 'Brigade API key is required' if key.nil?
 
-# XXX connect once, check API key validity
-
 # build a hash-o-miner clients
 miners = config['miners'].map do |miner|
-  {
-    name: miner[0],
-    client: CGMiner::API::Client.new(miner[1]['host'], miner[1]['port'])
-  }
+  client = CGMiner::API::Client.new(miner[1]['host'], miner[1]['port'])
+  { name: miner[0], client: client }
 end
 
-api = Brigade::Monitor::API.new(key)
-loop do
-
-  updates = []
-
-  miners.each do |miner|
-    begin
-      summary = miner[:client].summary
-      devs = miner[:client].devs
-      pools = miner[:client].pools
-
-      # XXX check status replies on each command?
-
-      update = {
-        host: miner[:name],
-        uptime: summary.body[0]['Elapsed'],
-        mhash: summary.body[0]['MHS 5s'],
-        rejectpct: summary.body[0]['Pool Rejected%'],
-        asics: [],
-        fpgas: [],
-        gpus: [],
-        pools: []
-      }
-
-      devs.body.each do |dev|
-        if dev.has_key? 'GPU'
-          update[:gpus] << {
-            index: dev['GPU'],
-            temperature: dev['Temperature'],
-            enabled: dev['Enabled'] == 'Y',
-            status: :ok,                            # XXX enumerate statuses
-            uptime: dev['Device Elapsed'],
-            mhash: dev['MHS 5s'],
-            rejectpct: dev['Device Rejected%']
-          }
-        else
-          puts "Skipped device: #{dev}"
-        end
-      end
-
-      pools.body.each do |pool|
-        update[:pools] << {
-          index: pool['POOL'],
-          url: pool['URL'],
-          status: :ok,                              # XXX enumerate statuses
-          active: pool['Stratum Active'],
-          rejectpct: pool['Pool Rejected%']
-        }
-      end
-
-      updates << update
-    rescue Net::OpenTimeout
-      puts "Timed out: #{miner}"
-      # XXX put something in the update to indicate it barfed
-    rescue Exception => e
-      puts "Some other error: #{miner} (#{e.class})"
-      # XXX put something in the update to indicate it barfed
-    end
-  end
-
-  unless updates.empty?
-    response = api.hosts(updates)
-    unless 200 == response.code
-      puts "XXX: response: #{response.code} #{response}"
-    end
-  end
-
-  sleep 60
-
-end
+mon = Brigade::Monitor::Monitor.new(key, miners, log)
+mon.run
