@@ -8,8 +8,9 @@ module Brigade
       include HTTParty
       base_uri 'https://app.brigade.io/api/v1'
 
-      def initialize(key)
+      def initialize(key, logger)
         @key = key
+        @logger = logger
       end
 
       def hosts(data)
@@ -19,8 +20,7 @@ module Brigade
       private
 
       def command(command, params)
-        params.merge!({ token: @key })
-        self.class.post(command, query: params, verify: false)
+        self.class.post(command, query: params.merge({ token: @key }), verify: false)
       end
 
     end

@@ -3,10 +3,14 @@
 require 'awesome_print'
 require 'brigade/monitor'
 require 'cgminer/api'
+require 'logger'
 require 'optparse'
 require 'yaml'
 
 me = File.basename(__FILE__)
+
+log = Logger.new(STDOUT)
+log.level = Logger::WARN
 
 options = {}
 optparse = OptionParser.new do |opts|
@@ -16,6 +20,14 @@ optparse = OptionParser.new do |opts|
   end
   opts.on('-k', '--key API-KEY', String, 'Brigade API key') do |key|
     options[:key] = key
+  end
+  opts.on('-d', '--debug LEVEL', [:debug, :info], 'Debug level (DEBUG, INFO)') do |dbg|
+    case dbg
+    when :debug
+      log.level = Logger::DEBUG
+    when :info
+      log.level = Logger::INFO
+    end
   end
   opts.on('-v', '--version', 'Print application version') do
     puts "#{me} v#{Brigade::Monitor::VERSION}"
