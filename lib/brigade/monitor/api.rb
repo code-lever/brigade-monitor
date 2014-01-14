@@ -10,7 +10,7 @@ module Brigade
 
       def initialize(key, logger)
         @key = key
-        @logger = logger
+        @log = logger
       end
 
       def hosts(data)
@@ -20,6 +20,7 @@ module Brigade
       private
 
       def command(command, params)
+        @log.debug("Posting command: #{command}, params: #{params}")
         self.class.post(command, query: params.merge({ token: @key }), verify: false)
       end
 
