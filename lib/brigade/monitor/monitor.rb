@@ -73,7 +73,11 @@ module Brigade
           asics: [],
           fpgas: [],
           gpus: [],
-          pools: []
+          pools: [],
+          agent: {
+            name: 'brigade-monitor-gem',
+            version: Brigade::Monitor::VERSION
+          }
         }
 
         devs.body.each do |dev|
