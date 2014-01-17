@@ -1,3 +1,5 @@
+require 'json'
+
 module Brigade
   module Monitor
 
@@ -36,7 +38,7 @@ module Brigade
             @log.info("Updates available (#{updates.length}), submitting")
             begin
               tries ||= 3
-              response = api.hosts(updates)
+              response = api.hosts(updates.to_json)
             rescue Exception => e
               @log.error("Exception submitting updates (#{e})")
               unless (tries -= 1).zero?

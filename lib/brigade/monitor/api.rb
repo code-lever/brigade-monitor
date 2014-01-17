@@ -20,8 +20,8 @@ module Brigade
       private
 
       def command(command, params)
-        @log.debug("Posting command: #{command}, params: #{params}")
-        self.class.post(command, query: params.merge({ token: @key }), verify: false)
+        @log.debug("Posting command: #{command}, data: #{params}")
+        self.class.post(command, body: params.merge({ token: @key }), verify: false)
       end
 
     end
