@@ -92,7 +92,7 @@ module Brigade
               index: dev['GPU'],
               temperature: dev['Temperature'],
               enabled: dev['Enabled'] == 'Y',
-              status: :ok,                            # XXX enumerate statuses
+              status: dev['Status'],
               uptime: dev['Device Elapsed'],
               mhash: dev['MHS av'],
               hwerrors: dev['Hardware Errors'],
@@ -103,7 +103,7 @@ module Brigade
               index: dev['ASC'],
               temperature: dev['Temperature'],
               enabled: dev['Enabled'] == 'Y',
-              status: :ok,                            # XXX enumerate statuses
+              status: dev['Status'],
               uptime: dev['Device Elapsed'],
               mhash: dev['MHS av'],
               hwerrors: dev['Hardware Errors'],
@@ -114,7 +114,7 @@ module Brigade
               index: dev['PGA'],
               temperature: dev['Temperature'],
               enabled: dev['Enabled'] == 'Y',
-              status: :ok,                            # XXX enumerate statuses
+              status: dev['Status'],
               uptime: dev['Device Elapsed'],
               mhash: dev['MHS av'],
               hwerrors: dev['Hardware Errors'],
@@ -129,7 +129,7 @@ module Brigade
           update[:pools] << {
             index: pool['POOL'],
             url: pool['URL'],
-            status: :ok,                              # XXX enumerate statuses
+            status: pool['Status'],
             active: pool['Stratum Active'],
             rejectpct: pool['Pool Rejected%']
           }
