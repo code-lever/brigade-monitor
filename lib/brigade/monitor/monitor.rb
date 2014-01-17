@@ -61,6 +61,7 @@ module Brigade
       end
 
       def get_update(miner)
+        version = miner[:client].version
         summary = miner[:client].summary
         devs = miner[:client].devs
         pools = miner[:client].pools
@@ -72,6 +73,9 @@ module Brigade
           uptime: summary.body[0]['Elapsed'],
           mhash: summary.body[0]['MHS av'],
           rejectpct: summary.body[0]['Pool Rejected%'],
+          'api-version' => version.body[0]['API'],
+          'cgminer-version' => version.body[0]['CGMiner'],
+          'sgminer-version' => version.body[0]['SGMiner'],
           asics: [],
           fpgas: [],
           gpus: [],
