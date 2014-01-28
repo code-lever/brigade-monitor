@@ -130,6 +130,15 @@ module Brigade
             index: pool['POOL'],
             url: pool['URL'],
             status: pool['Status'],
+            priority: pool['Priority'],
+            quota: pool['Quota'],
+            longpoll: pool['Long Poll'] == 'Y',
+            getworks: pool['Getworks'],
+            accepted: pool['Accepted'],
+            rejected: pool['Rejected'],
+            works: pool['Works'],
+            discarded: pool['Discarded'],
+            stale: pool['Stale'],
             active: pool['Stratum Active'],
             rejectpct: pool['Pool Rejected%']
           }
