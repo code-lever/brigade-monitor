@@ -82,6 +82,7 @@ module Brigade
           pools: [],
           agent: {
             name: 'brigade-monitor-gem',
+            platform: RUBY_PLATFORM,
             version: Brigade::Monitor::VERSION
           }
         }
