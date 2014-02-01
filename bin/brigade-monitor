@@ -22,12 +22,7 @@ optparse = OptionParser.new do |opts|
     options[:key] = key
   end
   opts.on('-d', '--debug LEVEL', [:debug, :info], 'Debug level (debug, info)') do |dbg|
-    case dbg
-    when :debug
-      log.level = Logger::DEBUG
-    when :info
-      log.level = Logger::INFO
-    end
+    log.level = { debug: Logger::DEBUG, info: Logger::INFO }.fetch(dbg, Logger::WARN)
   end
   opts.on('-v', '--version', 'Print application version') do
     puts "#{me} v#{Brigade::Monitor::VERSION}"
