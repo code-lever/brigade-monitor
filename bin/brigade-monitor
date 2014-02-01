@@ -34,8 +34,9 @@ fail 'Configuration file is required' unless options[:config]
 
 begin
   config = YAML.load(open(options[:config]).read)
-rescue
-  fail 'An error occurred parsing configuration file'
+rescue => e
+  puts 'An error occurred parsing configuration file'
+  fail
 end
 
 key = options.fetch(:key, config['api-key'])
@@ -47,5 +48,5 @@ miners = config['miners'].map do |miner|
   { name: miner[0], client: client }
 end
 
-mon = Brigade::Monitor::Monitor.new(key, miners, log)
-mon.run
+monitor = Brigade::Monitor::Monitor.new(key, miners, log)
+monitor.run
