@@ -21,7 +21,7 @@ optparse = OptionParser.new do |opts|
   opts.on('-k', '--key API-KEY', String, 'Brigade API key') do |key|
     options[:key] = key
   end
-  opts.on('-d', '--debug LEVEL', [:debug, :info], 'Debug level (DEBUG, INFO)') do |dbg|
+  opts.on('-d', '--debug LEVEL', [:debug, :info], 'Debug level (debug, info)') do |dbg|
     case dbg
     when :debug
       log.level = Logger::DEBUG
