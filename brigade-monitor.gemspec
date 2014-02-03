@@ -27,6 +27,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'simplecov-rcov'
 
   spec.add_dependency 'awesome_print'
-  spec.add_dependency 'cgminer-api'
+  spec.add_dependency 'cgminer-api', '~> 0.1'
   spec.add_dependency 'httparty'
 end
