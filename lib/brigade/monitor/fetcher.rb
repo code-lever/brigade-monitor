@@ -184,8 +184,24 @@ module Brigade
           works: pool['Works'],
           discarded: pool['Discarded'],
           stale: pool['Stale'],
+          get_failures: pool['Get Failures'],
+          remote_failures: pool['Remote Failures'],
+          user: pool['User'],
+          last_share_time: pool['Last Share Time'],
+          diff1_shares: pool['Diff1 Shares'],
+          proxy_type: pool['Proxy Type'],
+          proxy: pool['Proxy'],
+          difficulty_accepted: pool['Difficulty Accepted'],
+          difficulty_rejected: pool['Difficulty Rejected'],
+          difficulty_stale: pool['Difficulty Stale'],
+          last_share_difficulty: pool['Last Share Difficulty'],
+          has_stratum: pool['Has Stratum'],
+          stratum_url: pool['Stratum URL'],
+          has_gbt: pool['Has GBT'],
+          best_share: pool['Best Share'],
           active: pool['Stratum Active'],
-          rejected_percent: pool['Pool Rejected%']
+          pool_rejected_percent: pool['Pool Rejected%'],
+          pool_stale_percent: pool['Pool Stale%'],
         }
       end
 
