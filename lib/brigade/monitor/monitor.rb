@@ -11,7 +11,6 @@ module Brigade
           fetcher = Brigade::Monitor::Fetcher.new(m[:client], m[:name], logger)
           { fetcher: fetcher }.merge(m)
         end
-        puts @miners.inspect
         @log = logger
       end
 
