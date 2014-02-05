@@ -86,9 +86,8 @@ module Brigade
         }
       end
 
-      def asic_info(device)
+      def device_info(device)
         {
-          index: device['ASC'],
           temperature: device['Temperature'],
           enabled: device['Enabled'] == 'Y',
           status: device['Status'],
@@ -109,38 +108,24 @@ module Brigade
           last_share_difficulty: device['Last Share Difficulty'],
           last_valid_work: device['Last Valid Work'],
         }
+      end
+
+      def asic_info(device)
+        {
+          index: device['ASC'],
+        }.merge(device_info(device))
       end
 
       def fpga_info(device)
         {
           index: device['PGA'],
-          temperature: device['Temperature'],
-          enabled: device['Enabled'] == 'Y',
-          status: device['Status'],
-          uptime: device['Device Elapsed'],
-          mhash_average: device['MHS av'],
-          mhash_current: device['MHS 5s'],
-          accepted: device['Accepted'],
-          rejected: device['Rejected'],
-          hardware_errors: device['Hardware Errors'],
-          utility: device['Utility'],
-          rejected_percent: device['Device Rejected%'],
-          last_share_pool: device['Last Share Pool'],
-          last_share_time: device['Last Share Time'],
-          total_mhash: device['Total MH'],
           frequency: device['Frequency'],
-          diff1_work: device['Diff1 Work'],
-          difficulty_accepted: device['Difficulty Accepted'],
-          difficulty_rejected: device['Difficulty Rejected'],
-          last_share_difficulty: device['Last Share Difficulty'],
-          last_valid_work: device['Last Valid Work'],
-        }
+        }.merge(device_info(device))
       end
 
       def gpu_info(device)
         {
           index: device['GPU'],
-          temperature: device['Temperature'],
           fan_speed: device['Fan Speed'],
           fan_percent: device['Fan Percent'],
           gpu_clock: device['GPU Clock'],
@@ -148,26 +133,8 @@ module Brigade
           gpu_voltage: device['GPU Voltage'],
           gpu_activity: device['GPU Activity'],
           powertune: device['Powertune'],
-          enabled: device['Enabled'] == 'Y',
-          status: device['Status'],
-          uptime: device['Device Elapsed'],
-          mhash_average: device['MHS av'],
-          mhash_current: device['MHS 5s'],
-          accepted: device['Accepted'],
-          rejected: device['Rejected'],
-          hardware_errors: device['Hardware Errors'],
-          utility: device['Utility'],
           intensity: device['Intensity'],
-          rejected_percent: device['Device Rejected%'],
-          last_share_pool: device['Last Share Pool'],
-          last_share_time: device['Last Share Time'],
-          total_mhash: device['Total MH'],
-          diff1_work: device['Diff1 Work'],
-          difficulty_accepted: device['Difficulty Accepted'],
-          difficulty_rejected: device['Difficulty Rejected'],
-          last_share_difficulty: device['Last Share Difficulty'],
-          last_valid_work: device['Last Valid Work'],
-        }
+        }.merge(device_info(device))
       end
 
       def pool_info(pool)
