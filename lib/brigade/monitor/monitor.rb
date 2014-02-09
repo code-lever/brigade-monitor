@@ -26,8 +26,11 @@ module Brigade
 
             begin
               updates << miner[:fetcher].get_update
-            rescue Net::OpenTimeout => e
-              @log.warn("Net::OpenTimeout building update for #{miner[:name]} (#{e})")
+            rescue Timeout::Error => e
+              @log.warn("Timeout::Error building update for #{miner[:name]} (#{e})")
+              # XXX put something in the update to indicate it barfed
+            rescue SystemCallError => e
+              @log.error("SystemCallError building update for #{miner[:name]} (#{e})")
               # XXX put something in the update to indicate it barfed
             rescue Exception => e
               @log.error("Exception building update for #{miner[:name]} (#{e})")
