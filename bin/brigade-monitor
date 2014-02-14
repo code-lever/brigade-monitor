@@ -15,7 +15,28 @@ log.level = Logger::WARN
 options = {}
 optparse = OptionParser.new do |opts|
   opts.banner = "Usage: #{me} [options]"
-  opts.on('-c', '--config FILE', String, 'Configuration file') do |c|
+  opts.on('-s', '--sample [FILE]', String, 'Write a sample configuration file') do |file|
+    file ||= 'config.yaml'
+    File.open(file, 'w') do |f|
+      f.write <<EOF
+# Set the api-key value to your API key from brigade.io
+# or, specify via command line, if that's your thing.
+api-key: REPLACE_WITH_API_KEY
+
+# Add the miners you wish to monitor with this agent.
+# port is optional, it defaults to the cgminer default of 4028.
+miners:
+  'Unnamed Miner 1':
+    host: miner1_hostname
+  'Unnamed Miner 2':
+    host: miner2_hostname
+    port: 4029
+EOF
+    end
+    puts "Sample configuration written to #{file}"
+    exit
+  end
+  opts.on('-c', '--config FILE', String, 'YAML configuration file') do |c|
     options[:config] = c
   end
   opts.on('-k', '--key API-KEY', String, 'Brigade API key') do |key|
