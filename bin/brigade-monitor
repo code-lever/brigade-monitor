@@ -65,7 +65,7 @@ fail 'Brigade API key is required' if key.nil?
 
 # build a hash-o-miner clients
 miners = config['miners'].map do |miner|
-  client = CGMiner::API::Client.new(miner[1]['host'], miner[1]['port'])
+  client = CGMiner::API::Client.new(miner[1]['host'], miner[1]['port'] || 4028)
   { name: miner[0], client: client }
 end
 
