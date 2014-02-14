@@ -41,6 +41,10 @@ module Brigade
 
       private
 
+      def find_mhash_current(blob)
+        blob[blob.keys.select { |k| /MHS \ds/.match(k) }.first] || 0
+      end
+
       def host_info(summary, version)
         sum = summary.body[0]
         ver = version.body[0]
@@ -48,7 +52,7 @@ module Brigade
           host: @name,
           uptime: sum['Elapsed'],
           mhash_average: sum['MHS av'],
-          mhash_current: sum['MHS 5s'],
+          mhash_current: find_mhash_current(sum),
           found_blocks: sum['Found Blocks'],
           getworks: sum['Getworks'],
           accepted: sum['Accepted'],
@@ -93,7 +97,7 @@ module Brigade
           status: device['Status'],
           uptime: device['Device Elapsed'],
           mhash_average: device['MHS av'],
-          mhash_current: device['MHS 5s'],
+          mhash_current: find_mhash_current(device),
           accepted: device['Accepted'],
           rejected: device['Rejected'],
           hardware_errors: device['Hardware Errors'],
