@@ -1,4 +1,4 @@
-# Brigade::Monitor  [![Build Status](https://travis-ci.org/code-lever/brigade-monitor-gem.png)](https://travis-ci.org/code-lever/brigade-monitor-gem) [![Dependency Status](https://gemnasium.com/code-lever/brigade-monitor-gem.png)](https://gemnasium.com/code-lever/brigade-monitor-gem) [![Code Climate](https://codeclimate.com/github/code-lever/brigade-monitor-gem.png)](https://codeclimate.com/github/code-lever/brigade-monitor-gem)
+# Brigade::Monitor  [![Build Status](https://travis-ci.org/code-lever/brigade-monitor-gem.png)](https://travis-ci.org/code-lever/brigade-monitor-gem) [![Code Climate](https://codeclimate.com/github/code-lever/brigade-monitor-gem.png)](https://codeclimate.com/github/code-lever/brigade-monitor-gem)
 
 TODO: Write a gem description
 
